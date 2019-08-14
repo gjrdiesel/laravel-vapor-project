@@ -2,6 +2,7 @@ id: 42
 name: vapor-savor
 environments:
     production:
+        database: testdb1
         memory: 1024
         cli-memory: 512
         build:
@@ -9,6 +10,7 @@ environments:
             - 'php artisan event:cache'
             - 'npm install && npm run prod && rm -rf node_modules'
     staging:
+        database: testdb1
         memory: 1024
         cli-memory: 512
         build:

@@ -21,7 +21,7 @@
             }
 
             .full-height {
-                height: 100vh;
+                min-height: 50vh;
             }
 
             .flex-center {
@@ -61,7 +61,12 @@
             .m-b-md {
                 margin-bottom: 30px;
             }
+
+            .text-left {
+                text-align: left;
+            }
         </style>
+        <link rel="stylesheet" href="{{ mix('/css/app.css') }}">
     </head>
     <body>
         <div class="flex-center position-ref full-height">
@@ -81,11 +86,53 @@
 
             <div class="content">
                 <div class="title m-b-md">
-		   Vapor
+                    <a href="/">Vapor</a>
                 </div>
 
-                <div class="links">
+                <div class="links m-b-md">
                     <a href="https://twitter.com/gjreasoner">Follow @gjreasoner on twitter</a>
+                </div>
+
+                <div class="tasks m-b-md">
+                    <a href="?dispatch=true">Queue API call</a>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-6 m-auto">
+                <div class="text-left">
+                    <div>
+                        <div class="d-flex justify-content-between mb-3">
+                            <div>
+                                <p>Search {{ $users->total() }} Users:</p>
+                            </div>
+                            <form class="d-flex">
+                                <input type="text" class="form-control" placeholder="Search" value="{{ request('search') }}" name="search"/>
+                                <button type="submit" class="btn">Go</button>
+                            </form>
+                        </div>
+                        @unless($users->isEmpty())
+                            <table class="table mb-3">
+                                @foreach($users as $user)
+                                    <tr>
+                                        <td>{{ $user->name }}</td>
+                                        <td>{{ $user->email }}</td>
+                                        <td>{{ $user->created_at->diffForHumans() }}</td>
+                                    </tr>
+                                @endforeach
+                            </table>
+                        @endunless
+                        @if($users->isEmpty())
+                            <div class="card">
+                                <div class="card-body">
+                                    No users found. <a href="{{ back()->getTargetUrl() }}">Go back.</a>
+                                </div>
+                            </div>
+                        @endif
+                        <div class="mb-3">
+                            {{ $users->render() }}
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

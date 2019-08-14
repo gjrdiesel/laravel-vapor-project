@@ -12,7 +12,14 @@
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    $users = \App\User::latest()
+        ->when(request('search'), function ($query, $search) {
+            return $query
+                ->where('email', 'like', "%$search%")
+                ->orWhere('name', 'like', "%$search%");
+        })
+        ->paginate(100);
+    return view('welcome', compact('users'));
 });
 
 Auth::routes();
